@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Instagram, Mail, Phone } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 export const Footer = () => {
@@ -58,10 +58,10 @@ export const Footer = () => {
               Our Services
             </h4>
             <ul className="space-y-2 text-sm text-muted-foreground">
+              <li>Placement/Job Insights – ₹199</li>
               <li>Quick Clarity – ₹221</li>
               <li>Life & Career – ₹351</li>
               <li>Future & Timing – ₹501</li>
-              <li>Placement/Job Insights – ₹199</li>
             </ul>
           </div>
 
@@ -79,8 +79,8 @@ export const Footer = () => {
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Mail size={16} className="text-primary" />
-                <a href="mailto:cosmorackle123@gmail.com" className="hover:text-primary transition-colors">
-                  cosmorackle123@gmail.com
+                <a href="mailto:niyati.nivriti@gmail.com" className="hover:text-primary transition-colors">
+                  niyati.nivriti@gmail.com
                 </a>
               </li>
               <li className="flex items-center gap-3 text-sm text-muted-foreground">
@@ -94,10 +94,6 @@ export const Footer = () => {
                   @cosmoracle123
                 </a>
               </li>
-              <li className="flex items-start gap-3 text-sm text-muted-foreground">
-                <MapPin size={16} className="text-primary mt-0.5" />
-                <span>Pimpri, Maharashtra, India</span>
-              </li>
             </ul>
           </div>
         </div>
@@ -105,7 +101,7 @@ export const Footer = () => {
         {/* Bottom Bar */}
         <div className="mt-10 pt-6 border-t border-border/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <p className="text-xs text-muted-foreground">
-            © {currentYear} CosmOracle by Niyati-Nivriti | Pimpri, Maharashtra | All Rights Reserved.
+            © {currentYear} CosmOracle by Niyati-Nivriti | All Rights Reserved.
           </p>
           <div className="flex items-center gap-4">
             <a
@@ -125,7 +121,7 @@ export const Footer = () => {
               <Phone size={20} />
             </a>
             <a
-              href="mailto:cosmorackle123@gmail.com"
+              href="mailto:niyati.nivriti@gmail.com"
               className="social-icon text-muted-foreground hover:text-accent"
             >
               <Mail size={20} />

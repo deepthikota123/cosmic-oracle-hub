@@ -17,7 +17,7 @@ const Booking = () => {
 
           {/* Payment Info */}
           <div className="mt-10 max-w-2xl mx-auto text-center">
-            <div className="glass-card p-6">
+            <div className="glass-card p-5 sm:p-6">
               <h3 className="font-heading font-semibold text-foreground mb-3">
                 💳 Payment Instructions
               </h3>
@@ -30,7 +30,7 @@ const Booking = () => {
                 </p>
               </div>
               <p className="text-muted-foreground text-xs">
-                After payment, upload the screenshot and enter the transaction ID in the form above.
+                After payment, upload the screenshot in the form above and submit your booking.
               </p>
             </div>
           </div>

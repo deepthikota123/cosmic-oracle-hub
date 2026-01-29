@@ -20,10 +20,10 @@ import {
 } from '@/components/ui/select';
 
 const plans = [
+  { id: 'placement-job', label: 'Placement/Job Insights - ₹199' },
   { id: 'quick-clarity', label: 'Quick Clarity - ₹221' },
   { id: 'life-career', label: 'Life & Career - ₹351' },
   { id: 'future-timing', label: 'Future & Timing - ₹501' },
-  { id: 'placement-job', label: 'Placement/Job Insights - ₹199' },
 ];
 
 const bookingSchema = z.object({
@@ -31,11 +31,10 @@ const bookingSchema = z.object({
   gender: z.enum(['Male', 'Female', 'Other'], { required_error: 'Please select your gender' }),
   phone: z.string().min(10, 'Enter a valid phone number').max(15),
   dateOfBirth: z.string().min(1, 'Date of birth is required'),
-  timeOfBirth: z.string().min(1, 'Time of birth is required'),
-  placeOfBirth: z.string().min(2, 'Place of birth is required').max(200),
+  timeOfBirth: z.string().optional(),
+  placeOfBirth: z.string().optional(),
   questionConcern: z.string().min(10, 'Please describe your concern (min 10 characters)').max(1000),
   preferredPlan: z.string().min(1, 'Please select a plan'),
-  transactionNumber: z.string().min(4, 'Transaction number is required').max(50),
 });
 
 type BookingFormData = z.infer<typeof bookingSchema>;
@@ -46,6 +45,7 @@ export const BookingForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string | null>(null);
+  const [fileError, setFileError] = useState<string | null>(null);
 
   const planFromUrl = searchParams.get('plan');
 
@@ -61,6 +61,8 @@ export const BookingForm = () => {
       preferredPlan: planFromUrl
         ? plans.find((p) => p.id === planFromUrl)?.label || ''
         : '',
+      timeOfBirth: '',
+      placeOfBirth: '',
     },
   });
 
@@ -75,14 +77,15 @@ export const BookingForm = () => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    setFileError(null);
     if (file) {
       // Validate file type and size
       if (!['image/jpeg', 'image/png'].includes(file.type)) {
-        toast.error('Please upload a JPG or PNG file');
+        setFileError('Please upload a JPG or PNG file');
         return;
       }
       if (file.size > 5 * 1024 * 1024) {
-        toast.error('File size must be less than 5MB');
+        setFileError('File size must be less than 5MB');
         return;
       }
       setUploadedFile(file);
@@ -91,28 +94,34 @@ export const BookingForm = () => {
   };
 
   const onSubmit = async (data: BookingFormData) => {
+    // Validate file upload is required
+    if (!uploadedFile) {
+      setFileError('Payment screenshot is required');
+      toast.error('Please upload payment screenshot');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
       let paymentScreenshotUrl = null;
 
-      // Upload payment screenshot if provided
-      if (uploadedFile) {
-        const fileExt = uploadedFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+      // Upload payment screenshot
+      const fileExt = uploadedFile.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
-        const { error: uploadError, data: uploadData } = await supabase.storage
+      const { error: uploadError, data: uploadData } = await supabase.storage
+        .from('payment-screenshots')
+        .upload(fileName, uploadedFile);
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw new Error('Failed to upload payment screenshot');
+      } else {
+        const { data: urlData } = supabase.storage
           .from('payment-screenshots')
-          .upload(fileName, uploadedFile);
-
-        if (uploadError) {
-          console.error('Upload error:', uploadError);
-        } else {
-          const { data: urlData } = supabase.storage
-            .from('payment-screenshots')
-            .getPublicUrl(fileName);
-          paymentScreenshotUrl = urlData.publicUrl;
-        }
+          .getPublicUrl(fileName);
+        paymentScreenshotUrl = urlData.publicUrl;
       }
 
       // Insert booking into database
@@ -121,12 +130,12 @@ export const BookingForm = () => {
         gender: data.gender,
         phone: data.phone,
         date_of_birth: data.dateOfBirth,
-        time_of_birth: data.timeOfBirth,
-        place_of_birth: data.placeOfBirth,
+        time_of_birth: data.timeOfBirth || '00:00',
+        place_of_birth: data.placeOfBirth || 'Not specified',
         question_concern: data.questionConcern,
         preferred_plan: data.preferredPlan,
         payment_screenshot_url: paymentScreenshotUrl,
-        transaction_number: data.transactionNumber,
+        transaction_number: 'Screenshot uploaded',
       });
 
       if (insertError) {
@@ -140,7 +149,8 @@ export const BookingForm = () => {
             fullName: data.fullName,
             phone: data.phone,
             preferredPlan: data.preferredPlan,
-            transactionNumber: data.transactionNumber,
+            dateOfBirth: data.dateOfBirth,
+            questionConcern: data.questionConcern,
           },
         });
       } catch (notifyError) {
@@ -160,26 +170,27 @@ export const BookingForm = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card p-6 md:p-10 max-w-2xl mx-auto"
+      className="glass-card p-5 sm:p-6 md:p-10 max-w-2xl mx-auto"
     >
       <div className="text-center mb-8">
         <h2 className="font-display text-2xl md:text-3xl font-bold holographic-text mb-2">
           Book Your Cosmic Session
         </h2>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-sm sm:text-base">
           Fill in your details to begin your journey
         </p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Full Name */}
         <div>
-          <Label htmlFor="fullName">Full Name *</Label>
+          <Label htmlFor="fullName" className="text-sm">Full Name *</Label>
           <Input
             id="fullName"
             {...register('fullName')}
             placeholder="Enter your full name"
-            className="mt-1.5 bg-secondary/30 border-border/50"
+            className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
+            autoComplete="name"
           />
           {errors.fullName && (
             <p className="text-destructive text-sm mt-1">{errors.fullName.message}</p>
@@ -188,9 +199,9 @@ export const BookingForm = () => {
 
         {/* Gender */}
         <div>
-          <Label>Gender *</Label>
+          <Label className="text-sm">Gender *</Label>
           <Select onValueChange={(value) => setValue('gender', value as 'Male' | 'Female' | 'Other')}>
-            <SelectTrigger className="mt-1.5 bg-secondary/30 border-border/50">
+            <SelectTrigger className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base">
               <SelectValue placeholder="Select your gender" />
             </SelectTrigger>
             <SelectContent>
@@ -206,13 +217,15 @@ export const BookingForm = () => {
 
         {/* Phone */}
         <div>
-          <Label htmlFor="phone">Phone Number *</Label>
+          <Label htmlFor="phone" className="text-sm">Phone Number *</Label>
           <Input
             id="phone"
             type="tel"
+            inputMode="tel"
             {...register('phone')}
             placeholder="+91 XXXXX XXXXX"
-            className="mt-1.5 bg-secondary/30 border-border/50"
+            className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
+            autoComplete="tel"
           />
           {errors.phone && (
             <p className="text-destructive text-sm mt-1">{errors.phone.message}</p>
@@ -220,56 +233,50 @@ export const BookingForm = () => {
         </div>
 
         {/* Date of Birth */}
+        <div>
+          <Label htmlFor="dateOfBirth" className="text-sm">Date of Birth *</Label>
+          <Input
+            id="dateOfBirth"
+            type="date"
+            {...register('dateOfBirth')}
+            className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
+          />
+          {errors.dateOfBirth && (
+            <p className="text-destructive text-sm mt-1">{errors.dateOfBirth.message}</p>
+          )}
+        </div>
+
+        {/* Time and Place of Birth in grid on larger screens */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="dateOfBirth">Date of Birth *</Label>
-            <Input
-              id="dateOfBirth"
-              type="date"
-              {...register('dateOfBirth')}
-              className="mt-1.5 bg-secondary/30 border-border/50"
-            />
-            {errors.dateOfBirth && (
-              <p className="text-destructive text-sm mt-1">{errors.dateOfBirth.message}</p>
-            )}
-          </div>
-          <div>
-            <Label htmlFor="timeOfBirth">Time of Birth *</Label>
+            <Label htmlFor="timeOfBirth" className="text-sm">Time of Birth (Optional)</Label>
             <Input
               id="timeOfBirth"
               type="time"
               {...register('timeOfBirth')}
-              className="mt-1.5 bg-secondary/30 border-border/50"
+              className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
             />
-            {errors.timeOfBirth && (
-              <p className="text-destructive text-sm mt-1">{errors.timeOfBirth.message}</p>
-            )}
           </div>
-        </div>
-
-        {/* Place of Birth */}
-        <div>
-          <Label htmlFor="placeOfBirth">Place of Birth *</Label>
-          <Input
-            id="placeOfBirth"
-            {...register('placeOfBirth')}
-            placeholder="City, State, Country"
-            className="mt-1.5 bg-secondary/30 border-border/50"
-          />
-          {errors.placeOfBirth && (
-            <p className="text-destructive text-sm mt-1">{errors.placeOfBirth.message}</p>
-          )}
+          <div>
+            <Label htmlFor="placeOfBirth" className="text-sm">Place of Birth (Optional)</Label>
+            <Input
+              id="placeOfBirth"
+              {...register('placeOfBirth')}
+              placeholder="City, State"
+              className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
+            />
+          </div>
         </div>
 
         {/* Question/Concern */}
         <div>
-          <Label htmlFor="questionConcern">Your Question / Concern *</Label>
+          <Label htmlFor="questionConcern" className="text-sm">Your Question / Concern *</Label>
           <Textarea
             id="questionConcern"
             {...register('questionConcern')}
             placeholder="Describe what you'd like clarity on..."
             rows={4}
-            className="mt-1.5 bg-secondary/30 border-border/50"
+            className="mt-1.5 bg-secondary/30 border-border/50 text-base min-h-[100px]"
           />
           {errors.questionConcern && (
             <p className="text-destructive text-sm mt-1">{errors.questionConcern.message}</p>
@@ -278,12 +285,12 @@ export const BookingForm = () => {
 
         {/* Preferred Plan */}
         <div>
-          <Label>Preferred Plan *</Label>
+          <Label className="text-sm">Preferred Plan *</Label>
           <Select
             value={watch('preferredPlan')}
             onValueChange={(value) => setValue('preferredPlan', value)}
           >
-            <SelectTrigger className="mt-1.5 bg-secondary/30 border-border/50">
+            <SelectTrigger className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base">
               <SelectValue placeholder="Select your consultation plan" />
             </SelectTrigger>
             <SelectContent>
@@ -299,14 +306,14 @@ export const BookingForm = () => {
           )}
         </div>
 
-        {/* Payment Screenshot Upload */}
+        {/* Payment Screenshot Upload - Required */}
         <div>
-          <Label>Payment Screenshot (Optional)</Label>
+          <Label className="text-sm">Payment Screenshot *</Label>
           <p className="text-xs text-muted-foreground mb-2">
             Upload JPG/PNG, max 5MB
           </p>
           <div className="mt-1.5">
-            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-border/50 rounded-lg cursor-pointer bg-secondary/20 hover:bg-secondary/30 transition-colors">
+            <label className="flex flex-col items-center justify-center w-full h-36 sm:h-32 border-2 border-dashed border-border/50 rounded-lg cursor-pointer bg-secondary/20 hover:bg-secondary/30 transition-colors active:bg-secondary/40">
               {filePreview ? (
                 <div className="relative w-full h-full">
                   <img
@@ -319,10 +326,10 @@ export const BookingForm = () => {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <div className="flex flex-col items-center justify-center py-6 px-4">
                   <Upload className="w-8 h-8 text-muted-foreground mb-2" />
-                  <p className="text-sm text-muted-foreground">
-                    Click to upload payment screenshot
+                  <p className="text-sm text-muted-foreground text-center">
+                    Tap to upload payment screenshot
                   </p>
                 </div>
               )}
@@ -334,19 +341,8 @@ export const BookingForm = () => {
               />
             </label>
           </div>
-        </div>
-
-        {/* Transaction Number */}
-        <div>
-          <Label htmlFor="transactionNumber">Transaction Number *</Label>
-          <Input
-            id="transactionNumber"
-            {...register('transactionNumber')}
-            placeholder="Enter your payment transaction ID"
-            className="mt-1.5 bg-secondary/30 border-border/50"
-          />
-          {errors.transactionNumber && (
-            <p className="text-destructive text-sm mt-1">{errors.transactionNumber.message}</p>
+          {fileError && (
+            <p className="text-destructive text-sm mt-1">{fileError}</p>
           )}
         </div>
 
@@ -354,7 +350,7 @@ export const BookingForm = () => {
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="w-full btn-glow py-6 text-lg font-display font-semibold"
+          className="w-full btn-glow py-6 text-base sm:text-lg font-display font-semibold mt-6"
         >
           {isSubmitting ? (
             <>
