@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { MapPin, Phone, Mail, Instagram, Loader2, Send } from 'lucide-react';
+import { Phone, Mail, Instagram, Loader2, Send } from 'lucide-react';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { FloatingSocial } from '@/components/FloatingSocial';
@@ -79,13 +79,12 @@ const Contact = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 max-w-5xl mx-auto">
             {/* Contact Info */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="space-y-6"
             >
               <div className="glass-card p-6">
                 <h2 className="font-heading text-2xl font-bold text-foreground mb-6">
@@ -109,7 +108,7 @@ const Contact = () => {
                   </a>
 
                   <a
-                    href="mailto:cosmorackle123@gmail.com"
+                    href="mailto:niyati.nivriti@gmail.com"
                     className="flex items-start gap-4 group"
                   >
                     <div className="w-12 h-12 rounded-xl bg-gradient-cosmic flex items-center justify-center flex-shrink-0 group-hover:shadow-neon transition-shadow">
@@ -118,7 +117,7 @@ const Contact = () => {
                     <div>
                       <p className="font-heading font-semibold text-foreground">Email</p>
                       <p className="text-muted-foreground group-hover:text-primary transition-colors">
-                        cosmorackle123@gmail.com
+                        niyati.nivriti@gmail.com
                       </p>
                     </div>
                   </a>
@@ -139,33 +138,7 @@ const Contact = () => {
                       </p>
                     </div>
                   </a>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-cosmic flex items-center justify-center flex-shrink-0">
-                      <MapPin className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <p className="font-heading font-semibold text-foreground">Location</p>
-                      <p className="text-muted-foreground">
-                        Pimpri, Maharashtra, India
-                      </p>
-                    </div>
-                  </div>
                 </div>
-              </div>
-
-              {/* Google Map */}
-              <div className="glass-card overflow-hidden h-64 rounded-2xl">
-                <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d60523.15959489866!2d73.76291027910156!3d18.62376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9e751bfffff%3A0x8c5eb4645cfd4be3!2sPimpri-Chinchwad%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1706614500000!5m2!1sen!2sin"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0 }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="CosmOracle Location"
-                />
               </div>
             </motion.div>
 
@@ -187,7 +160,7 @@ const Contact = () => {
                       id="name"
                       {...register('name')}
                       placeholder="Enter your name"
-                      className="mt-1.5 bg-secondary/30 border-border/50"
+                      className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
                     />
                     {errors.name && (
                       <p className="text-destructive text-sm mt-1">{errors.name.message}</p>
@@ -201,7 +174,7 @@ const Contact = () => {
                       type="email"
                       {...register('email')}
                       placeholder="your@email.com"
-                      className="mt-1.5 bg-secondary/30 border-border/50"
+                      className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
                     />
                     {errors.email && (
                       <p className="text-destructive text-sm mt-1">{errors.email.message}</p>
@@ -215,7 +188,7 @@ const Contact = () => {
                       {...register('message')}
                       placeholder="How can we help you?"
                       rows={5}
-                      className="mt-1.5 bg-secondary/30 border-border/50"
+                      className="mt-1.5 bg-secondary/30 border-border/50 text-base"
                     />
                     {errors.message && (
                       <p className="text-destructive text-sm mt-1">{errors.message.message}</p>

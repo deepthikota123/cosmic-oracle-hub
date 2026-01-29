@@ -9,7 +9,8 @@ interface BookingNotification {
   fullName: string;
   phone: string;
   preferredPlan: string;
-  transactionNumber: string;
+  dateOfBirth?: string;
+  questionConcern?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -19,13 +20,13 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { fullName, phone, preferredPlan, transactionNumber }: BookingNotification = await req.json();
+    const { fullName, phone, preferredPlan, dateOfBirth, questionConcern }: BookingNotification = await req.json();
 
     console.log('📧 New booking notification received:', {
       fullName,
       phone,
       preferredPlan,
-      transactionNumber,
+      dateOfBirth,
     });
 
     // Compose notification message
@@ -33,26 +34,76 @@ const handler = async (req: Request): Promise<Response> => {
       `👤 Name: ${fullName}\n` +
       `📱 Phone: ${phone}\n` +
       `📋 Plan: ${preferredPlan}\n` +
-      `💳 Transaction: ${transactionNumber}\n\n` +
+      `🎂 DOB: ${dateOfBirth || 'Not provided'}\n` +
+      `❓ Question: ${questionConcern?.substring(0, 100) || 'Not provided'}...\n\n` +
       `Please verify and contact the client.`;
 
-    // Log the notification (in production, integrate with WhatsApp API/Email service)
+    // Log the notification
     console.log('Notification message:', message);
 
-    // WhatsApp notification URL (can be opened by admin to send message)
+    // WhatsApp notification URL for Saurabh
     const adminPhone = '916230016403';
     const whatsappUrl = `https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`;
     
     console.log('WhatsApp notification URL:', whatsappUrl);
 
-    // Email notification would require RESEND_API_KEY
-    // For now, we log the booking details for manual follow-up
+    // Email notification to niyati.nivriti@gmail.com
+    // Note: This requires RESEND_API_KEY to be configured for actual email sending
+    const emailTo = 'niyati.nivriti@gmail.com';
+    console.log('Email should be sent to:', emailTo);
+    console.log('Booking details for email:', {
+      fullName,
+      phone,
+      preferredPlan,
+      dateOfBirth,
+      questionConcern,
+    });
+
+    // Try to send email if RESEND_API_KEY is available
+    const resendApiKey = Deno.env.get('RESEND_API_KEY');
+    if (resendApiKey) {
+      try {
+        const emailResponse = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${resendApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: 'CosmOracle <noreply@cosmoracle.com>',
+            to: [emailTo],
+            subject: `New Booking: ${fullName} - ${preferredPlan}`,
+            html: `
+              <h1>🌟 New CosmOracle Booking!</h1>
+              <p><strong>Name:</strong> ${fullName}</p>
+              <p><strong>Phone:</strong> ${phone}</p>
+              <p><strong>Plan:</strong> ${preferredPlan}</p>
+              <p><strong>Date of Birth:</strong> ${dateOfBirth || 'Not provided'}</p>
+              <p><strong>Question/Concern:</strong> ${questionConcern || 'Not provided'}</p>
+              <hr>
+              <p>Please verify payment and contact the client.</p>
+            `,
+          }),
+        });
+        
+        if (emailResponse.ok) {
+          console.log('Email sent successfully');
+        } else {
+          console.log('Email sending failed:', await emailResponse.text());
+        }
+      } catch (emailError) {
+        console.error('Email error:', emailError);
+      }
+    } else {
+      console.log('RESEND_API_KEY not configured - skipping email notification');
+    }
     
     return new Response(
       JSON.stringify({ 
         success: true, 
         message: 'Notification logged successfully',
-        whatsappUrl 
+        whatsappUrl,
+        emailTo,
       }),
       {
         status: 200,

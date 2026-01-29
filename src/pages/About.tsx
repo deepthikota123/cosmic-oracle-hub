@@ -14,6 +14,27 @@ const values = [
   { icon: Users, label: 'Inclusivity', desc: 'Welcoming all seekers' },
 ];
 
+const team = [
+  {
+    name: 'Saurabh',
+    role: 'Lead Astrologer & Psychic Guide',
+    initial: 'S',
+    bio: 'With years of dedicated study in Vedic astrology and natural psychic abilities, Saurabh has guided 200+ clients through life\'s most important decisions. His approach combines traditional astrological wisdom with modern, practical insights tailored for today\'s generation.',
+  },
+  {
+    name: 'Atul Anand',
+    role: 'Astrologer & Psychic Guide',
+    initial: 'A',
+    bio: 'Atul brings a unique blend of intuitive insight and astrological expertise to every reading. With a passion for helping young professionals navigate career and relationship decisions, he delivers clarity with compassion.',
+  },
+  {
+    name: 'Vijay',
+    role: 'Accounts Handler',
+    initial: 'V',
+    bio: 'Vijay ensures all booking and payment processes run smoothly. His dedication to customer service makes sure your cosmic journey begins seamlessly.',
+  },
+];
+
 const About = () => {
   return (
     <div className="min-h-screen relative">
@@ -113,25 +134,33 @@ const About = () => {
             className="mb-20"
           >
             <h2 className="font-display text-3xl font-bold text-center mb-10">
-              <span className="holographic-text">Meet Your Guide</span>
+              <span className="holographic-text">Meet Your Guides</span>
             </h2>
-            <div className="max-w-2xl mx-auto">
-              <div className="glass-card p-8 text-center">
-                <div className="w-32 h-32 mx-auto mb-6 rounded-full bg-gradient-cosmic p-1">
-                  <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
-                    <span className="font-display text-4xl font-bold holographic-text">S</span>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+              {team.map((member, index) => (
+                <motion.div
+                  key={member.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.7 + index * 0.1 }}
+                  className="glass-card p-6 text-center"
+                >
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-cosmic p-1">
+                    <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
+                      <span className="font-display text-2xl font-bold holographic-text">{member.initial}</span>
+                    </div>
                   </div>
-                </div>
-                <h3 className="font-heading text-2xl font-bold text-foreground mb-2">
-                  Saurabh
-                </h3>
-                <p className="text-primary font-medium mb-4">
-                  Lead Astrologer & Psychic Guide
-                </p>
-                <p className="text-foreground/80 leading-relaxed">
-                  With years of dedicated study in Vedic astrology and natural psychic abilities, Saurabh has guided 200+ clients through life's most important decisions. His approach combines traditional astrological wisdom with modern, practical insights tailored for today's generation. Based in Pimpri, Maharashtra, he's passionate about making cosmic guidance accessible and actionable for young adults seeking clarity in career, love, and life direction.
-                </p>
-              </div>
+                  <h3 className="font-heading text-xl font-bold text-foreground mb-1">
+                    {member.name}
+                  </h3>
+                  <p className="text-primary font-medium text-sm mb-3">
+                    {member.role}
+                  </p>
+                  <p className="text-foreground/80 text-sm leading-relaxed">
+                    {member.bio}
+                  </p>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
 

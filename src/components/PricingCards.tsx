@@ -4,6 +4,16 @@ import { ArrowRight, HelpCircle, TrendingUp, Clock, Briefcase } from 'lucide-rea
 
 const plans = [
   {
+    id: 'placement-job',
+    name: 'Placement/Job Insights',
+    price: '₹199',
+    description: 'Upcoming Job/Placement Guidance',
+    details: 'Opportunity Timing & Prep Tips',
+    duration: '10-12 min only',
+    icon: Briefcase,
+    popular: false,
+  },
+  {
     id: 'quick-clarity',
     name: 'Quick Clarity',
     price: '₹221',
@@ -31,16 +41,6 @@ const plans = [
     details: 'One Major Block Explained',
     duration: '25-30 min only',
     icon: Clock,
-    popular: false,
-  },
-  {
-    id: 'placement-job',
-    name: 'Placement/Job Insights',
-    price: '₹199',
-    description: 'Upcoming Job/Placement Guidance',
-    details: 'Opportunity Timing & Prep Tips',
-    duration: '10-12 min only',
-    icon: Briefcase,
     popular: false,
   },
 ];
