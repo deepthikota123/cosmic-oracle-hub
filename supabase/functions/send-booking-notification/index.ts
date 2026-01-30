@@ -29,6 +29,10 @@ const handler = async (req: Request): Promise<Response> => {
       dateOfBirth,
     });
 
+    // Admin notification details
+    const adminPhone = '916230016403';
+    const adminEmail = 'niyati.nivriti@gmail.com';
+
     // Compose notification message
     const message = `🌟 New CosmOracle Booking!\n\n` +
       `👤 Name: ${fullName}\n` +
@@ -36,31 +40,16 @@ const handler = async (req: Request): Promise<Response> => {
       `📋 Plan: ${preferredPlan}\n` +
       `🎂 DOB: ${dateOfBirth || 'Not provided'}\n` +
       `❓ Question: ${questionConcern?.substring(0, 100) || 'Not provided'}...\n\n` +
-      `Please verify and contact the client.`;
+      `Please verify payment and contact the client.`;
 
-    // Log the notification
-    console.log('Notification message:', message);
-
-    // WhatsApp notification URL for Saurabh
-    const adminPhone = '916230016403';
+    // WhatsApp notification URL
     const whatsappUrl = `https://wa.me/${adminPhone}?text=${encodeURIComponent(message)}`;
-    
-    console.log('WhatsApp notification URL:', whatsappUrl);
+    console.log('WhatsApp URL generated:', whatsappUrl);
 
-    // Email notification to niyati.nivriti@gmail.com
-    // Note: This requires RESEND_API_KEY to be configured for actual email sending
-    const emailTo = 'niyati.nivriti@gmail.com';
-    console.log('Email should be sent to:', emailTo);
-    console.log('Booking details for email:', {
-      fullName,
-      phone,
-      preferredPlan,
-      dateOfBirth,
-      questionConcern,
-    });
-
-    // Try to send email if RESEND_API_KEY is available
+    // Send email notification using Resend
     const resendApiKey = Deno.env.get('RESEND_API_KEY');
+    let emailSent = false;
+
     if (resendApiKey) {
       try {
         const emailResponse = await fetch('https://api.resend.com/emails', {
@@ -70,29 +59,49 @@ const handler = async (req: Request): Promise<Response> => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            from: 'CosmOracle <noreply@cosmoracle.com>',
-            to: [emailTo],
-            subject: `New Booking: ${fullName} - ${preferredPlan}`,
+            from: 'CosmOracle <onboarding@resend.dev>',
+            to: [adminEmail],
+            subject: `🌟 New Booking: ${fullName} - ${preferredPlan}`,
             html: `
-              <h1>🌟 New CosmOracle Booking!</h1>
-              <p><strong>Name:</strong> ${fullName}</p>
-              <p><strong>Phone:</strong> ${phone}</p>
-              <p><strong>Plan:</strong> ${preferredPlan}</p>
-              <p><strong>Date of Birth:</strong> ${dateOfBirth || 'Not provided'}</p>
-              <p><strong>Question/Concern:</strong> ${questionConcern || 'Not provided'}</p>
-              <hr>
-              <p>Please verify payment and contact the client.</p>
+              <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                <h1 style="color: #7c3aed; border-bottom: 2px solid #7c3aed; padding-bottom: 10px;">
+                  🌟 New CosmOracle Booking!
+                </h1>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                  <p style="margin: 10px 0;"><strong>👤 Name:</strong> ${fullName}</p>
+                  <p style="margin: 10px 0;"><strong>📱 Phone:</strong> ${phone}</p>
+                  <p style="margin: 10px 0;"><strong>📋 Plan:</strong> ${preferredPlan}</p>
+                  <p style="margin: 10px 0;"><strong>🎂 Date of Birth:</strong> ${dateOfBirth || 'Not provided'}</p>
+                  <p style="margin: 10px 0;"><strong>❓ Question/Concern:</strong></p>
+                  <p style="background: white; padding: 15px; border-radius: 4px; border-left: 4px solid #7c3aed;">
+                    ${questionConcern || 'Not provided'}
+                  </p>
+                </div>
+
+                <div style="background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0;">
+                  <p style="margin: 0; color: #856404;">
+                    ⚠️ <strong>Action Required:</strong> Please verify payment screenshot and contact the client.
+                  </p>
+                </div>
+
+                <p style="color: #666; font-size: 12px; margin-top: 30px;">
+                  This is an automated notification from CosmOracle booking system.
+                </p>
+              </div>
             `,
           }),
         });
         
         if (emailResponse.ok) {
           console.log('Email sent successfully');
+          emailSent = true;
         } else {
-          console.log('Email sending failed:', await emailResponse.text());
+          const errorText = await emailResponse.text();
+          console.error('Email sending failed:', errorText);
         }
       } catch (emailError) {
-        console.error('Email error:', emailError);
+        console.error('Email sending failed:', emailError);
       }
     } else {
       console.log('RESEND_API_KEY not configured - skipping email notification');
@@ -101,9 +110,10 @@ const handler = async (req: Request): Promise<Response> => {
     return new Response(
       JSON.stringify({ 
         success: true, 
-        message: 'Notification logged successfully',
+        message: 'Notification processed successfully',
         whatsappUrl,
-        emailTo,
+        emailSent,
+        emailTo: adminEmail,
       }),
       {
         status: 200,
