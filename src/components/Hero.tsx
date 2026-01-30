@@ -7,30 +7,15 @@ export const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 pointer-events-none">
         <img
           src={heroImage}
           alt="Cosmic Astrologer"
           className="w-full h-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
-        <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-background/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/60 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-transparent to-background/90" />
       </div>
-
-      {/* Floating Star Particles - reduced for cleaner look */}
-      {Array.from({ length: 15 }).map((_, i) => (
-        <motion.div
-          key={i}
-          className="star-particle"
-          style={{
-            width: Math.random() * 2 + 1 + 'px',
-            height: Math.random() * 2 + 1 + 'px',
-            left: Math.random() * 100 + '%',
-            top: Math.random() * 100 + '%',
-            animationDelay: Math.random() * 3 + 's',
-          }}
-        />
-      ))}
 
       {/* Main Content */}
       <div className="relative z-20 container mx-auto px-4 text-center">
@@ -38,14 +23,14 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-3xl mx-auto"
+          className="max-w-2xl mx-auto"
         >
           {/* Brand Badge */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/30 mb-6"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-background/80 backdrop-blur-sm border border-primary/40 mb-8"
           >
             <Sparkles className="w-4 h-4 text-primary" />
             <span className="text-sm font-medium text-primary">Premium Astrology Consultations</span>
@@ -56,7 +41,14 @@ export const Hero = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
-            className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black holographic-text mb-3"
+            className="font-display text-5xl sm:text-6xl md:text-7xl font-black mb-4 drop-shadow-2xl"
+            style={{
+              background: 'linear-gradient(135deg, hsl(var(--primary)), hsl(var(--cosmic-gold)), hsl(var(--primary)))',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 4px 20px hsl(var(--primary) / 0.4))',
+            }}
           >
             CosmOracle
           </motion.h1>
@@ -66,7 +58,10 @@ export const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.5 }}
-            className="font-heading text-xl sm:text-2xl md:text-3xl text-cosmic-gold font-semibold mb-8 text-glow-gold"
+            className="font-heading text-2xl sm:text-3xl text-cosmic-gold font-bold mb-6 drop-shadow-lg"
+            style={{
+              textShadow: '0 2px 20px hsl(var(--cosmic-gold) / 0.5)',
+            }}
           >
             Jeevan Ka GPS
           </motion.p>
@@ -76,7 +71,7 @@ export const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.7 }}
-            className="text-base sm:text-lg text-foreground/80 max-w-xl mx-auto mb-10 leading-relaxed"
+            className="text-base sm:text-lg text-foreground/90 max-w-lg mx-auto mb-10 leading-relaxed bg-background/50 backdrop-blur-sm rounded-lg px-4 py-3"
           >
             Get clarity on career, relationships, and life decisions with personalized cosmic guidance from expert astrologers.
           </motion.p>
@@ -97,7 +92,7 @@ export const Hero = () => {
             </Link>
             <Link
               to="/about#testimonials"
-              className="px-8 py-4 rounded-full text-base sm:text-lg font-heading font-medium border-2 border-primary/50 text-foreground hover:border-primary hover:bg-primary/10 transition-all w-full sm:w-auto text-center"
+              className="px-8 py-4 rounded-full text-base sm:text-lg font-heading font-medium border-2 border-primary/50 text-foreground hover:border-primary hover:bg-primary/10 transition-all w-full sm:w-auto text-center backdrop-blur-sm bg-background/30"
             >
               See Reviews
             </Link>
@@ -108,16 +103,16 @@ export const Hero = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
-            className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-muted-foreground"
+            className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm bg-background/60 backdrop-blur-sm rounded-full px-6 py-3 mx-auto w-fit"
           >
             <div className="flex items-center gap-2">
               <span className="text-cosmic-gold">★★★★★</span>
-              <span>200+ Clients</span>
+              <span className="text-foreground/80">200+ Clients</span>
             </div>
             <div className="hidden sm:block w-px h-4 bg-border" />
-            <div>Starting ₹199</div>
+            <div className="text-foreground/80">Starting ₹199</div>
             <div className="hidden sm:block w-px h-4 bg-border" />
-            <div>Same Day Readings</div>
+            <div className="text-foreground/80">Same Day Readings</div>
           </motion.div>
         </motion.div>
 

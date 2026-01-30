@@ -170,7 +170,7 @@ export const BookingForm = () => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="glass-card p-5 sm:p-6 md:p-10 max-w-2xl mx-auto"
+      className="glass-card p-5 sm:p-6 md:p-10 max-w-2xl mx-auto relative z-30"
     >
       <div className="text-center mb-8">
         <h2 className="font-display text-2xl md:text-3xl font-bold holographic-text mb-2">
@@ -183,13 +183,13 @@ export const BookingForm = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Full Name */}
-        <div>
+        <div className="relative z-40">
           <Label htmlFor="fullName" className="text-sm">Full Name *</Label>
           <Input
             id="fullName"
             {...register('fullName')}
             placeholder="Enter your full name"
-            className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
+            className="mt-1.5 bg-background border-border h-12 text-base relative z-40"
             autoComplete="name"
           />
           {errors.fullName && (
@@ -198,13 +198,13 @@ export const BookingForm = () => {
         </div>
 
         {/* Gender */}
-        <div>
+        <div className="relative z-50">
           <Label className="text-sm">Gender *</Label>
           <Select onValueChange={(value) => setValue('gender', value as 'Male' | 'Female' | 'Other')}>
-            <SelectTrigger className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base">
+            <SelectTrigger className="mt-1.5 bg-background border-border h-12 text-base relative z-50">
               <SelectValue placeholder="Select your gender" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="z-[100] bg-background border-border">
               <SelectItem value="Male">Male</SelectItem>
               <SelectItem value="Female">Female</SelectItem>
               <SelectItem value="Other">Other</SelectItem>
@@ -216,7 +216,7 @@ export const BookingForm = () => {
         </div>
 
         {/* Phone */}
-        <div>
+        <div className="relative z-40">
           <Label htmlFor="phone" className="text-sm">Phone Number *</Label>
           <Input
             id="phone"
@@ -224,7 +224,7 @@ export const BookingForm = () => {
             inputMode="tel"
             {...register('phone')}
             placeholder="+91 XXXXX XXXXX"
-            className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
+            className="mt-1.5 bg-background border-border h-12 text-base relative z-40"
             autoComplete="tel"
           />
           {errors.phone && (
@@ -233,13 +233,13 @@ export const BookingForm = () => {
         </div>
 
         {/* Date of Birth */}
-        <div>
+        <div className="relative z-40">
           <Label htmlFor="dateOfBirth" className="text-sm">Date of Birth *</Label>
           <Input
             id="dateOfBirth"
             type="date"
             {...register('dateOfBirth')}
-            className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
+            className="mt-1.5 bg-background border-border h-12 text-base relative z-40"
           />
           {errors.dateOfBirth && (
             <p className="text-destructive text-sm mt-1">{errors.dateOfBirth.message}</p>
@@ -247,14 +247,14 @@ export const BookingForm = () => {
         </div>
 
         {/* Time and Place of Birth in grid on larger screens */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-40">
           <div>
             <Label htmlFor="timeOfBirth" className="text-sm">Time of Birth (Optional)</Label>
             <Input
               id="timeOfBirth"
               type="time"
               {...register('timeOfBirth')}
-              className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
+              className="mt-1.5 bg-background border-border h-12 text-base"
             />
           </div>
           <div>
@@ -263,20 +263,20 @@ export const BookingForm = () => {
               id="placeOfBirth"
               {...register('placeOfBirth')}
               placeholder="City, State"
-              className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base"
+              className="mt-1.5 bg-background border-border h-12 text-base"
             />
           </div>
         </div>
 
         {/* Question/Concern */}
-        <div>
+        <div className="relative z-40">
           <Label htmlFor="questionConcern" className="text-sm">Your Question / Concern *</Label>
           <Textarea
             id="questionConcern"
             {...register('questionConcern')}
             placeholder="Describe what you'd like clarity on..."
             rows={4}
-            className="mt-1.5 bg-secondary/30 border-border/50 text-base min-h-[100px]"
+            className="mt-1.5 bg-background border-border text-base min-h-[100px] relative z-40"
           />
           {errors.questionConcern && (
             <p className="text-destructive text-sm mt-1">{errors.questionConcern.message}</p>
@@ -284,16 +284,16 @@ export const BookingForm = () => {
         </div>
 
         {/* Preferred Plan */}
-        <div>
+        <div className="relative z-50">
           <Label className="text-sm">Preferred Plan *</Label>
           <Select
             value={watch('preferredPlan')}
             onValueChange={(value) => setValue('preferredPlan', value)}
           >
-            <SelectTrigger className="mt-1.5 bg-secondary/30 border-border/50 h-12 text-base">
+            <SelectTrigger className="mt-1.5 bg-background border-border h-12 text-base relative z-50">
               <SelectValue placeholder="Select your consultation plan" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="z-[100] bg-background border-border">
               {plans.map((plan) => (
                 <SelectItem key={plan.id} value={plan.label}>
                   {plan.label}
@@ -307,13 +307,13 @@ export const BookingForm = () => {
         </div>
 
         {/* Payment Screenshot Upload - Required */}
-        <div>
+        <div className="relative z-30">
           <Label className="text-sm">Payment Screenshot *</Label>
           <p className="text-xs text-muted-foreground mb-2">
             Upload JPG/PNG, max 5MB
           </p>
           <div className="mt-1.5">
-            <label className="flex flex-col items-center justify-center w-full h-36 sm:h-32 border-2 border-dashed border-border/50 rounded-lg cursor-pointer bg-secondary/20 hover:bg-secondary/30 transition-colors active:bg-secondary/40">
+            <label className="flex flex-col items-center justify-center w-full h-36 sm:h-32 border-2 border-dashed border-border rounded-lg cursor-pointer bg-background hover:bg-secondary/30 transition-colors active:bg-secondary/40 relative z-30">
               {filePreview ? (
                 <div className="relative w-full h-full">
                   <img
