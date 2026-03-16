@@ -30,7 +30,7 @@ const Booking = () => {
                 </p>
               </div>
               <p className="text-muted-foreground text-xs">
-                After payment, upload the screenshot in the form above and submit your booking.
+                After payment, submit your booking. We'll confirm via WhatsApp/call.
               </p>
             </div>
           </div>

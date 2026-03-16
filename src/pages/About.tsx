@@ -5,6 +5,8 @@ import { Footer } from '@/components/Footer';
 import { TestimonialCarousel } from '@/components/TestimonialCarousel';
 import { FloatingSocial } from '@/components/FloatingSocial';
 import { ParticleStars } from '@/components/ParticleStars';
+import instagramQR from '@/assets/instagram-qr.png';
+import cartoonBoy from '@/assets/cartoon-boy-astro.png';
 
 const values = [
   { icon: Shield, label: 'Authenticity', desc: 'Genuine readings with no gimmicks' },
@@ -12,27 +14,6 @@ const values = [
   { icon: Heart, label: 'Positivity', desc: 'Focus on growth, not fear' },
   { icon: Target, label: 'Precision', desc: 'Accurate, specific insights' },
   { icon: Users, label: 'Inclusivity', desc: 'Welcoming all seekers' },
-];
-
-const team = [
-  {
-    name: 'Saurabh',
-    role: 'Lead Astrologer & Psychic Guide',
-    initial: 'S',
-    bio: 'With years of dedicated study in Vedic astrology and natural psychic abilities, Saurabh has guided 200+ clients through life\'s most important decisions. His approach combines traditional astrological wisdom with modern, practical insights tailored for today\'s generation.',
-  },
-  {
-    name: 'Atul Anand',
-    role: 'Astrologer & Psychic Guide',
-    initial: 'A',
-    bio: 'Atul brings a unique blend of intuitive insight and astrological expertise to every reading. With a passion for helping young professionals navigate career and relationship decisions, he delivers clarity with compassion.',
-  },
-  {
-    name: 'Vijay',
-    role: 'Accounts Handler',
-    initial: 'V',
-    bio: 'Vijay ensures all booking and payment processes run smoothly. His dedication to customer service makes sure your cosmic journey begins seamlessly.',
-  },
 ];
 
 const About = () => {
@@ -44,12 +25,19 @@ const About = () => {
 
       <main className="pt-28 pb-20">
         <div className="container mx-auto px-4">
-          {/* Header */}
+          {/* Header with cartoon boy */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-16"
           >
+            <motion.img
+              src={cartoonBoy}
+              alt="Cosmic Boy"
+              className="w-32 h-32 sm:w-40 sm:h-40 mx-auto mb-6 object-contain"
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            />
             <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold mb-4">
               <span className="holographic-text">About CosmOracle</span>
             </h1>
@@ -68,7 +56,7 @@ const About = () => {
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-xl bg-gradient-cosmic flex items-center justify-center">
-                  <Sparkles className="w-6 h-6 text-white" />
+                  <Sparkles className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <h2 className="font-heading text-2xl font-bold text-foreground">Our Vision</h2>
               </div>
@@ -85,7 +73,7 @@ const About = () => {
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-12 h-12 rounded-xl bg-gradient-cosmic flex items-center justify-center">
-                  <Target className="w-6 h-6 text-white" />
+                  <Target className="w-6 h-6 text-primary-foreground" />
                 </div>
                 <h2 className="font-heading text-2xl font-bold text-foreground">Our Mission</h2>
               </div>
@@ -126,7 +114,7 @@ const About = () => {
             </div>
           </motion.div>
 
-          {/* Team */}
+          {/* Instagram QR Section */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -134,33 +122,27 @@ const About = () => {
             className="mb-20"
           >
             <h2 className="font-display text-3xl font-bold text-center mb-10">
-              <span className="holographic-text">Meet Your Guides</span>
+              <span className="holographic-text">Follow Us on Instagram</span>
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-              {team.map((member, index) => (
-                <motion.div
-                  key={member.name}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 + index * 0.1 }}
-                  className="glass-card p-6 text-center"
-                >
-                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-cosmic p-1">
-                    <div className="w-full h-full rounded-full bg-card flex items-center justify-center">
-                      <span className="font-display text-2xl font-bold holographic-text">{member.initial}</span>
-                    </div>
-                  </div>
-                  <h3 className="font-heading text-xl font-bold text-foreground mb-1">
-                    {member.name}
-                  </h3>
-                  <p className="text-primary font-medium text-sm mb-3">
-                    {member.role}
-                  </p>
-                  <p className="text-foreground/80 text-sm leading-relaxed">
-                    {member.bio}
-                  </p>
-                </motion.div>
-              ))}
+            <div className="glass-card p-8 max-w-sm mx-auto text-center">
+              <motion.img
+                src={instagramQR}
+                alt="Follow @cosmoracle123 on Instagram"
+                className="w-48 h-48 sm:w-56 sm:h-56 mx-auto rounded-xl object-contain"
+                whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 300 }}
+              />
+              <a
+                href="https://instagram.com/cosmoracle123"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block mt-4 text-primary font-heading font-bold text-lg hover:underline"
+              >
+                @cosmoracle123
+              </a>
+              <p className="text-muted-foreground text-sm mt-2">
+                Scan the QR code or tap to follow ✨
+              </p>
             </div>
           </motion.div>
 

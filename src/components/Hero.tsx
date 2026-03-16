@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import heroImage from '@/assets/hero-astrologer.jpg';
+import cartoonBoy from '@/assets/cartoon-boy-astro.png';
 
 export const Hero = () => {
   return (
@@ -98,12 +99,21 @@ export const Hero = () => {
             </Link>
           </motion.div>
 
+          {/* Cartoon Boy */}
+          <motion.img
+            src={cartoonBoy}
+            alt="Cosmic Boy Guide"
+            className="w-24 h-24 sm:w-28 sm:h-28 mx-auto mt-6"
+            animate={{ y: [0, -8, 0] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          />
+
           {/* Trust indicators */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.2 }}
-            className="mt-10 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm bg-background/60 backdrop-blur-sm rounded-full px-6 py-3 mx-auto w-fit"
+            className="mt-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-sm bg-background/60 backdrop-blur-sm rounded-full px-6 py-3 mx-auto w-fit"
           >
             <div className="flex items-center gap-2">
               <span className="text-cosmic-gold">★★★★★</span>
