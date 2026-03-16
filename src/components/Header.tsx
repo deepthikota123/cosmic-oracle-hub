@@ -5,95 +5,91 @@ import { Menu, X } from 'lucide-react';
 import logo from '@/assets/logo.png';
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/services', label: 'Services' },
-  { href: '/booking', label: 'Book Now' },
-  { href: '/about', label: 'About Us' },
-  { href: '/contact', label: 'Contact' },
+  { href: '#services', label: 'Services' },
+  { href: '#reviews', label: 'Reviews' },
+  { href: '#contact', label: 'Contact' },
 ];
 
-export const Header = () => {
+interface HeaderProps {
+  onBookNow?: () => void;
+}
+
+export const Header = ({ onBookNow }: HeaderProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleNavClick = (href: string) => {
+    setIsMobileMenuOpen(false);
+    if (href.startsWith('#')) {
+      const el = document.querySelector(href);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   return (
     <motion.header
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-background/90 backdrop-blur-lg shadow-cosmic' : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled ? 'bg-background/80 backdrop-blur-xl border-b border-border/10' : 'bg-transparent'
       }`}
     >
       <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-20">
+        <nav className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-2.5 group">
             <motion.img
               src={logo}
               alt="Niyati-Nivriti Logo"
-              className="h-12 w-auto logo-holographic"
+              className="h-9 sm:h-11 w-auto logo-holographic"
               whileHover={{ scale: 1.05 }}
-              transition={{ type: 'spring', stiffness: 300 }}
             />
             <div className="hidden sm:block">
-              <h1 className="font-display text-lg font-bold holographic-text">
+              <h1 className="font-display text-sm font-bold text-cosmic-gold text-glow-gold tracking-wider">
                 CosmOracle
               </h1>
-              <p className="text-xs text-muted-foreground">Jeevan Ka GPS</p>
+              <p className="text-[9px] text-muted-foreground tracking-widest uppercase">Jeevan Ka GPS</p>
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden lg:flex items-center gap-8">
+          {/* Desktop Nav */}
+          <ul className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <li key={link.href}>
-                <Link
-                  to={link.href}
-                  className={`relative font-heading font-medium text-sm tracking-wide transition-colors duration-300 ${
-                    location.pathname === link.href
-                      ? 'text-primary'
-                      : 'text-foreground/80 hover:text-primary'
-                  }`}
+                <button
+                  onClick={() => handleNavClick(link.href)}
+                  className="font-body font-medium text-xs tracking-widest uppercase text-foreground/60 hover:text-cosmic-gold transition-colors duration-300"
                 >
                   {link.label}
-                  {location.pathname === link.href && (
-                    <motion.span
-                      layoutId="activeNav"
-                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-cosmic rounded-full"
-                    />
-                  )}
-                </Link>
+                </button>
               </li>
             ))}
           </ul>
 
-          {/* CTA Button */}
-          <div className="hidden lg:block">
-            <Link
-              to="/booking"
-              className="btn-glow px-6 py-2.5 rounded-full text-sm text-primary-foreground"
+          {/* CTA */}
+          <div className="hidden md:block">
+            <button
+              onClick={onBookNow}
+              className="btn-gold px-6 py-2.5 rounded-full text-xs tracking-wider"
             >
-              Book Your Reading
-            </Link>
+              Book Reading
+            </button>
           </div>
 
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Toggle */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 text-foreground hover:text-primary transition-colors"
-            aria-label="Toggle menu"
+            className="md:hidden p-2 text-foreground/70 hover:text-cosmic-gold transition-colors"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </nav>
 
@@ -102,33 +98,26 @@ export const Header = () => {
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden pb-6"
+            className="md:hidden pb-6 border-t border-border/10"
           >
-            <ul className="flex flex-col gap-4">
+            <ul className="flex flex-col gap-3 pt-4">
               {navLinks.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block py-2 font-heading font-medium ${
-                      location.pathname === link.href
-                        ? 'text-primary'
-                        : 'text-foreground/80'
-                    }`}
+                  <button
+                    onClick={() => handleNavClick(link.href)}
+                    className="block py-2 font-body text-sm text-foreground/70 hover:text-cosmic-gold"
                   >
                     {link.label}
-                  </Link>
+                  </button>
                 </li>
               ))}
               <li>
-                <Link
-                  to="/booking"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="btn-glow inline-block px-6 py-2.5 rounded-full text-sm text-primary-foreground mt-2"
+                <button
+                  onClick={() => { setIsMobileMenuOpen(false); onBookNow?.(); }}
+                  className="btn-gold inline-block px-6 py-2.5 rounded-full text-xs tracking-wider mt-2"
                 >
-                  Book Your Reading
-                </Link>
+                  Book Reading
+                </button>
               </li>
             </ul>
           </motion.div>
