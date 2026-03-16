@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import heroImage from '@/assets/hero-astrologer.jpg';
+import cartoonBoy from '@/assets/cartoon-boy-astro.png';
 
 export const Hero = () => {
   return (
