@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Upload, Loader2, Check } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -43,9 +43,6 @@ export const BookingForm = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
-  const [filePreview, setFilePreview] = useState<string | null>(null);
-  const [fileError, setFileError] = useState<string | null>(null);
 
   const planFromUrl = searchParams.get('plan');
 
@@ -75,56 +72,10 @@ export const BookingForm = () => {
     }
   }, [planFromUrl, setValue]);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    setFileError(null);
-    if (file) {
-      // Validate file type and size
-      if (!['image/jpeg', 'image/png'].includes(file.type)) {
-        setFileError('Please upload a JPG or PNG file');
-        return;
-      }
-      if (file.size > 5 * 1024 * 1024) {
-        setFileError('File size must be less than 5MB');
-        return;
-      }
-      setUploadedFile(file);
-      setFilePreview(URL.createObjectURL(file));
-    }
-  };
-
   const onSubmit = async (data: BookingFormData) => {
-    // Validate file upload is required
-    if (!uploadedFile) {
-      setFileError('Payment screenshot is required');
-      toast.error('Please upload payment screenshot');
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
-      let paymentScreenshotUrl = null;
-
-      // Upload payment screenshot
-      const fileExt = uploadedFile.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-
-      const { error: uploadError, data: uploadData } = await supabase.storage
-        .from('payment-screenshots')
-        .upload(fileName, uploadedFile);
-
-      if (uploadError) {
-        console.error('Upload error:', uploadError);
-        throw new Error('Failed to upload payment screenshot');
-      } else {
-        const { data: urlData } = supabase.storage
-          .from('payment-screenshots')
-          .getPublicUrl(fileName);
-        paymentScreenshotUrl = urlData.publicUrl;
-      }
-
-      // Insert booking into database
       const { error: insertError } = await supabase.from('bookings').insert({
         full_name: data.fullName,
         gender: data.gender,
@@ -134,8 +85,8 @@ export const BookingForm = () => {
         place_of_birth: data.placeOfBirth || 'Not specified',
         question_concern: data.questionConcern,
         preferred_plan: data.preferredPlan,
-        payment_screenshot_url: paymentScreenshotUrl,
-        transaction_number: 'Screenshot uploaded',
+        payment_screenshot_url: null,
+        transaction_number: 'N/A',
       });
 
       if (insertError) {
@@ -246,7 +197,7 @@ export const BookingForm = () => {
           )}
         </div>
 
-        {/* Time and Place of Birth in grid on larger screens */}
+        {/* Time and Place of Birth */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-40">
           <div>
             <Label htmlFor="timeOfBirth" className="text-sm">Time of Birth (Optional)</Label>
@@ -303,46 +254,6 @@ export const BookingForm = () => {
           </Select>
           {errors.preferredPlan && (
             <p className="text-destructive text-sm mt-1">{errors.preferredPlan.message}</p>
-          )}
-        </div>
-
-        {/* Payment Screenshot Upload - Required */}
-        <div className="relative z-30">
-          <Label className="text-sm">Payment Screenshot *</Label>
-          <p className="text-xs text-muted-foreground mb-2">
-            Upload JPG/PNG, max 5MB
-          </p>
-          <div className="mt-1.5">
-            <label className="flex flex-col items-center justify-center w-full h-36 sm:h-32 border-2 border-dashed border-border rounded-lg cursor-pointer bg-background hover:bg-secondary/30 transition-colors active:bg-secondary/40 relative z-30">
-              {filePreview ? (
-                <div className="relative w-full h-full">
-                  <img
-                    src={filePreview}
-                    alt="Payment screenshot"
-                    className="w-full h-full object-contain rounded-lg"
-                  />
-                  <div className="absolute top-2 right-2 bg-green-500 text-white p-1 rounded-full">
-                    <Check size={16} />
-                  </div>
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-6 px-4">
-                  <Upload className="w-8 h-8 text-muted-foreground mb-2" />
-                  <p className="text-sm text-muted-foreground text-center">
-                    Tap to upload payment screenshot
-                  </p>
-                </div>
-              )}
-              <input
-                type="file"
-                accept=".jpg,.jpeg,.png"
-                onChange={handleFileChange}
-                className="hidden"
-              />
-            </label>
-          </div>
-          {fileError && (
-            <p className="text-destructive text-sm mt-1">{fileError}</p>
           )}
         </div>
 
