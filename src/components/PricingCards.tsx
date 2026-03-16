@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { ArrowRight, HelpCircle, TrendingUp, Clock, Briefcase } from 'lucide-react';
+import { ArrowRight, HelpCircle, TrendingUp, Clock, Briefcase, Sparkles } from 'lucide-react';
 
 const plans = [
   {
@@ -9,7 +8,7 @@ const plans = [
     price: '₹199',
     description: 'Upcoming Job/Placement Guidance',
     details: 'Opportunity Timing & Prep Tips',
-    duration: '10-12 min only',
+    duration: '10-12 min',
     icon: Briefcase,
     popular: false,
   },
@@ -18,20 +17,20 @@ const plans = [
     name: 'Quick Clarity',
     price: '₹221',
     description: 'One Question + Current Phase',
-    details: 'Honest Direction',
-    duration: '8-10 min only',
+    details: 'Honest Direction & Clarity',
+    duration: '8-10 min',
     icon: HelpCircle,
-    popular: false,
+    popular: true,
   },
   {
     id: 'life-career',
     name: 'Life & Career',
     price: '₹351',
     description: 'Career/Studies Growth Direction',
-    details: 'Next 6-12 Months',
-    duration: '15-18 min only',
+    details: 'Next 6-12 Months Forecast',
+    duration: '15-18 min',
     icon: TrendingUp,
-    popular: true,
+    popular: false,
   },
   {
     id: 'future-timing',
@@ -39,90 +38,96 @@ const plans = [
     price: '₹501',
     description: 'Career + Money Opportunity Period',
     details: 'One Major Block Explained',
-    duration: '25-30 min only',
+    duration: '25-30 min',
     icon: Clock,
     popular: false,
   },
 ];
 
-export const PricingCards = () => {
+interface PricingCardsProps {
+  onBookNow: (planId: string) => void;
+}
+
+export const PricingCards = ({ onBookNow }: PricingCardsProps) => {
   return (
-    <section className="py-20 relative overflow-hidden">
-      {/* Background glow effects */}
-      <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-[120px] -z-10" />
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-[120px] -z-10" />
+    <section id="services" className="py-24 relative overflow-hidden">
+      {/* Ambient orbs */}
+      <div className="ambient-orb w-[500px] h-[500px] top-0 left-[-10%]" />
+      <div className="ambient-orb w-[400px] h-[400px] bottom-0 right-[-5%]" style={{ background: 'radial-gradient(circle, hsl(42 85% 55% / 0.06) 0%, transparent 70%)' }} />
 
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
         >
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
-            <span className="holographic-text">Choose Your Path</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cosmic-gold/20 bg-card/30 backdrop-blur-sm mb-6">
+            <Sparkles className="w-3.5 h-3.5 text-cosmic-gold" />
+            <span className="text-xs font-body tracking-widest uppercase text-cosmic-gold/80">Our Premium Services</span>
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold mb-4 text-foreground">
+            Choose Your <span className="text-glow-gold text-cosmic-gold">Path</span>
           </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-xl mx-auto font-body text-sm sm:text-base">
             Select the consultation that resonates with your cosmic journey. Each reading is crafted to give you clarity and direction.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {plans.map((plan, index) => (
             <motion.div
               key={plan.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
+              transition={{ duration: 0.6, delay: index * 0.12 }}
               className="relative group"
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10">
-                  <span className="px-4 py-1 text-xs font-display font-bold bg-gradient-cosmic text-white rounded-full shadow-neon">
-                    MOST POPULAR
+                  <span className="px-4 py-1 text-[10px] font-display font-bold tracking-wider uppercase bg-gradient-gold text-background rounded-full shadow-gold">
+                    Most Popular
                   </span>
                 </div>
               )}
 
-              <div className={`pricing-card h-full flex flex-col ${plan.popular ? 'ring-2 ring-primary' : ''}`}>
+              <div className={`service-card h-full flex flex-col ${plan.popular ? 'ring-1 ring-cosmic-gold/40' : ''}`}>
                 {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-gradient-cosmic flex items-center justify-center mb-4 shadow-neon group-hover:scale-110 transition-transform duration-300">
-                  <plan.icon className="w-7 h-7 text-white" />
+                <div className="w-12 h-12 rounded-xl bg-gradient-cosmic flex items-center justify-center mb-4 group-hover:shadow-neon transition-shadow duration-500">
+                  <plan.icon className="w-6 h-6 text-primary-foreground" />
                 </div>
 
-                {/* Title & Price */}
-                <h3 className="font-heading text-xl font-bold text-foreground mb-2">
+                {/* Title */}
+                <h3 className="font-heading text-xl font-bold text-foreground mb-2 italic">
                   {plan.name}
                 </h3>
-                <div className="flex items-baseline gap-1 mb-4">
-                  <span className="font-display text-4xl font-black text-cosmic-gold text-glow-gold">
+
+                {/* Price */}
+                <div className="mb-4">
+                  <span className="font-display text-3xl font-bold text-cosmic-gold text-glow-gold">
                     {plan.price}
                   </span>
                 </div>
 
                 {/* Description */}
-                <p className="text-foreground/90 font-medium mb-1">
-                  {plan.description}
-                </p>
-                <p className="text-muted-foreground text-sm mb-4">
-                  {plan.details}
-                </p>
+                <p className="text-foreground/80 text-sm font-medium mb-1">{plan.description}</p>
+                <p className="text-muted-foreground text-xs mb-4">{plan.details}</p>
 
-                {/* Duration */}
+                {/* Duration & CTA */}
                 <div className="mt-auto">
-                  <span className="inline-block px-3 py-1.5 rounded-full bg-secondary/50 text-xs font-medium text-foreground/80 mb-4">
+                  <span className="inline-block px-3 py-1 rounded-full bg-secondary/50 text-xs text-foreground/60 mb-4">
                     ⏱️ {plan.duration}
                   </span>
 
-                  <Link
-                    to={`/booking?plan=${plan.id}`}
-                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-cosmic text-white font-heading font-semibold text-sm hover:shadow-neon transition-all duration-300 group/btn"
+                  <button
+                    onClick={() => onBookNow(plan.id)}
+                    className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-cosmic text-primary-foreground font-display text-xs font-semibold tracking-wider uppercase hover:shadow-neon transition-all duration-300 group/btn"
                   >
                     Book Now
-                    <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
+                    <ArrowRight size={14} className="group-hover/btn:translate-x-1 transition-transform" />
+                  </button>
                 </div>
               </div>
             </motion.div>
