@@ -14,9 +14,9 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Orbitron', 'sans-serif'],
-        heading: ['Space Grotesk', 'sans-serif'],
-        body: ['Inter', 'sans-serif'],
+        display: ['Cinzel', 'serif'],
+        heading: ['Cormorant Garamond', 'serif'],
+        body: ['Outfit', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -107,10 +107,6 @@ export default {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-20px)" },
         },
-        "orbit": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
         "shimmer": {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
@@ -124,14 +120,12 @@ export default {
         "scale-in": "scale-in 0.5s ease-out forwards",
         "glow-pulse": "glow-pulse 2s ease-in-out infinite",
         "float": "float 6s ease-in-out infinite",
-        "orbit": "orbit 20s linear infinite",
         "shimmer": "shimmer 2s linear infinite",
       },
       backgroundImage: {
-        "gradient-cosmic": "linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(217 91% 60%) 50%, hsl(189 94% 43%) 100%)",
-        "gradient-nebula": "linear-gradient(180deg, hsl(240 40% 8%) 0%, hsl(262 50% 15%) 50%, hsl(240 40% 8%) 100%)",
-        "gradient-card": "linear-gradient(145deg, hsl(240 35% 15%) 0%, hsl(262 40% 12%) 100%)",
-        "gradient-gold": "linear-gradient(135deg, hsl(45 93% 56%) 0%, hsl(35 90% 50%) 100%)",
+        "gradient-cosmic": "linear-gradient(135deg, hsl(270 60% 50%) 0%, hsl(220 70% 55%) 50%, hsl(185 80% 40%) 100%)",
+        "gradient-nebula": "linear-gradient(180deg, hsl(232 40% 5%) 0%, hsl(270 35% 12%) 50%, hsl(232 40% 5%) 100%)",
+        "gradient-gold": "linear-gradient(135deg, hsl(42 85% 55%) 0%, hsl(35 80% 48%) 100%)",
       },
     },
   },
