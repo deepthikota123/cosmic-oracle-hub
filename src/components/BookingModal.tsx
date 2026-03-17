@@ -274,7 +274,7 @@ export const BookingModal = ({ isOpen, onClose, selectedPlan }: BookingModalProp
                         Booking...
                       </>
                     ) : (
-                      '✨ Proceed to Booking'
+                      '✨ Confirm Booking'
                     )}
                   </Button>
 
