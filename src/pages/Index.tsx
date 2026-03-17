@@ -8,6 +8,7 @@ import { ContactSection } from '@/components/ContactSection';
 import { BookingModal } from '@/components/BookingModal';
 import { AmbientSound } from '@/components/AmbientSound';
 import { ParticleStars } from '@/components/ParticleStars';
+import { FloatingWhatsApp } from '@/components/FloatingWhatsApp';
 
 const Index = () => {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -35,6 +36,7 @@ const Index = () => {
       </main>
 
       <Footer />
+      <FloatingWhatsApp />
 
       <BookingModal
         isOpen={isBookingOpen}
