@@ -274,7 +274,7 @@ export const BookingModal = ({ isOpen, onClose, selectedPlan }: BookingModalProp
                         Booking...
                       </>
                     ) : (
-                      '✨ Proceed to Booking'
+                      '✨ Confirm Booking'
                     )}
                   </Button>
 
@@ -319,10 +319,10 @@ const SuccessView = ({ onClose }: { onClose: () => void }) => (
       Booking Received! ✨
     </h3>
     <p className="text-foreground/80 text-sm font-body leading-relaxed max-w-sm mx-auto mb-2">
-      Our team will contact you on <strong className="text-cosmic-gold">WhatsApp within 30 minutes</strong> to confirm your slot and payment details.
+      Thank you! Your booking request is received. We will contact you on <strong className="text-cosmic-gold">WhatsApp within 30 minutes</strong> to confirm slot and payment. ✨
     </p>
     <p className="text-muted-foreground text-xs mb-8">
-      Thank you for choosing CosmOracle — your cosmic journey begins soon!
+      CosmOracle — your cosmic journey begins soon!
     </p>
     <Button onClick={onClose} className="btn-gold px-8 py-3 rounded-full text-sm font-display tracking-wider">
       Close
