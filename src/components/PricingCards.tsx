@@ -3,8 +3,8 @@ import { ArrowRight, HelpCircle, TrendingUp, Clock, Briefcase, Sparkles } from '
 
 const plans = [
   {
-    id: 'karmasthana-guide',
-    name: 'Karmasthana Guide',
+    id: 'job-focus',
+    name: 'Job Focus',
     subtitle: 'Placement Focus',
     price: '₹199',
     description: 'Upcoming Job/Placement Guidance',
@@ -14,8 +14,8 @@ const plans = [
     popular: false,
   },
   {
-    id: 'prashna-marg',
-    name: 'Prashna Marg Insight',
+    id: 'career-check',
+    name: 'Career Check',
     subtitle: 'Career & Business',
     price: '₹279',
     description: 'One Question + Current Phase',
@@ -25,8 +25,8 @@ const plans = [
     popular: true,
   },
   {
-    id: 'bhavishya-phal',
-    name: 'Bhavishya Phal Forecast',
+    id: 'future-forecast',
+    name: 'Future Forecast',
     subtitle: 'Career, Business & Relationships',
     price: '₹349',
     description: 'Career/Studies Growth Direction',
@@ -36,8 +36,8 @@ const plans = [
     popular: false,
   },
   {
-    id: 'sampoorna-kundali',
-    name: 'Sampoorna Kundali Analysis',
+    id: 'complete-reading',
+    name: 'Complete Reading',
     subtitle: 'Career, Relationships, Health & Business',
     price: '₹420',
     description: 'Career + Money Opportunity Period',
