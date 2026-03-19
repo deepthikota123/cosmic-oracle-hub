@@ -19,10 +19,10 @@ import {
 } from '@/components/ui/select';
 
 const plans = [
-  { id: 'placement-job', label: 'Placement/Job Insights - ₹199', duration: '10-12 min' },
-  { id: 'quick-clarity', label: 'Quick Clarity - ₹221', duration: '8-10 min' },
-  { id: 'life-career', label: 'Life & Career - ₹351', duration: '15-18 min' },
-  { id: 'future-timing', label: 'Future & Timing - ₹501', duration: '25-30 min' },
+  { id: 'karmasthana-guide', label: 'Karmasthana Guide - ₹199', duration: '10-12 min' },
+  { id: 'prashna-marg', label: 'Prashna Marg Insight - ₹279', duration: '12-15 min' },
+  { id: 'bhavishya-phal', label: 'Bhavishya Phal Forecast - ₹349', duration: '18-22 min' },
+  { id: 'sampoorna-kundali', label: 'Sampoorna Kundali Analysis - ₹420', duration: '25-30 min' },
 ];
 
 const bookingSchema = z.object({

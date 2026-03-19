@@ -3,8 +3,9 @@ import { ArrowRight, HelpCircle, TrendingUp, Clock, Briefcase, Sparkles } from '
 
 const plans = [
   {
-    id: 'placement-job',
-    name: 'Placement/Job Insights',
+    id: 'karmasthana-guide',
+    name: 'Karmasthana Guide',
+    subtitle: 'Placement Focus',
     price: '₹199',
     description: 'Upcoming Job/Placement Guidance',
     details: 'Opportunity Timing & Prep Tips',
@@ -13,29 +14,32 @@ const plans = [
     popular: false,
   },
   {
-    id: 'quick-clarity',
-    name: 'Quick Clarity',
-    price: '₹221',
+    id: 'prashna-marg',
+    name: 'Prashna Marg Insight',
+    subtitle: 'Career & Business',
+    price: '₹279',
     description: 'One Question + Current Phase',
     details: 'Honest Direction & Clarity',
-    duration: '8-10 min',
+    duration: '12-15 min',
     icon: HelpCircle,
     popular: true,
   },
   {
-    id: 'life-career',
-    name: 'Life & Career',
-    price: '₹351',
+    id: 'bhavishya-phal',
+    name: 'Bhavishya Phal Forecast',
+    subtitle: 'Career, Business & Relationships',
+    price: '₹349',
     description: 'Career/Studies Growth Direction',
     details: 'Next 6-12 Months Forecast',
-    duration: '15-18 min',
+    duration: '18-22 min',
     icon: TrendingUp,
     popular: false,
   },
   {
-    id: 'future-timing',
-    name: 'Future & Timing',
-    price: '₹501',
+    id: 'sampoorna-kundali',
+    name: 'Sampoorna Kundali Analysis',
+    subtitle: 'Career, Relationships, Health & Business',
+    price: '₹420',
     description: 'Career + Money Opportunity Period',
     details: 'One Major Block Explained',
     duration: '25-30 min',
@@ -100,9 +104,12 @@ export const PricingCards = ({ onBookNow }: PricingCardsProps) => {
                 </div>
 
                 {/* Title */}
-                <h3 className="font-heading text-xl font-bold text-foreground mb-2 italic">
+                <h3 className="font-heading text-lg font-bold text-foreground mb-0.5 italic">
                   {plan.name}
                 </h3>
+                <p className="text-[10px] tracking-wider uppercase text-cosmic-gold/60 font-body mb-2">
+                  {plan.subtitle}
+                </p>
 
                 {/* Price */}
                 <div className="mb-4">
