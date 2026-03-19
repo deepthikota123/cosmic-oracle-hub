@@ -104,9 +104,12 @@ export const PricingCards = ({ onBookNow }: PricingCardsProps) => {
                 </div>
 
                 {/* Title */}
-                <h3 className="font-heading text-xl font-bold text-foreground mb-2 italic">
+                <h3 className="font-heading text-lg font-bold text-foreground mb-0.5 italic">
                   {plan.name}
                 </h3>
+                <p className="text-[10px] tracking-wider uppercase text-cosmic-gold/60 font-body mb-2">
+                  {plan.subtitle}
+                </p>
 
                 {/* Price */}
                 <div className="mb-4">
