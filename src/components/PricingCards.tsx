@@ -4,7 +4,7 @@ import { ArrowRight, HelpCircle, TrendingUp, Clock, Briefcase, Sparkles } from '
 const plans = [
   {
     id: 'job-focus',
-    name: 'Job Focus',
+    name: 'General Reading',
     subtitle: 'Placement Focus',
     price: '₹199',
     description: 'Upcoming Job/Placement Guidance',
