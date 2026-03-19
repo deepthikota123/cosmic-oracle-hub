@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/select';
 
 const plans = [
-  { id: 'job-focus', label: 'Job Focus - ₹199', duration: '10-12 min' },
+  { id: 'general-reading', label: 'General Reading - ₹199', duration: '10-12 min' },
   { id: 'career-check', label: 'Career Check - ₹279', duration: '12-15 min' },
   { id: 'future-forecast', label: 'Future Forecast - ₹349', duration: '18-22 min' },
   { id: 'complete-reading', label: 'Complete Reading - ₹420', duration: '25-30 min' },
